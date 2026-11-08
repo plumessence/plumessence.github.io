@@ -4,9 +4,7 @@ A quiet personal blog for math, machine learning, schoolwork, and ideas. Built w
 
 ## Write a post
 
-The simplest option is **Write a note** in the site’s footer. The writing desk has live Markdown and LaTeX preview, browser-local draft saving, import/export, and a link to commit your post through GitHub. Drafts are stored only in the browser you use, so download anything you want to keep. Local drafts are not a backup service.
-
-You can also create or edit `.md` files directly inside `src/content/posts/` on GitHub:
+Create or edit `.md` files directly inside `src/content/posts/` on GitHub. Commit your changes to `main` to rebuild and publish the site automatically.
 
 ```markdown
 ---
@@ -27,13 +25,11 @@ $$
 ```
 
 - Topics: `Math`, `Machine learning`, `Schoolwork`, `Other`.
-- `draft: true` excludes a post from the published site, RSS, search, and exported sources. A draft committed to a **public repository is still publicly readable on GitHub**. Keep private drafts in the browser or locally.
+- `draft: true` excludes a post from the published site, RSS and search. A draft committed to a **public repository is still publicly readable on GitHub**. Keep private drafts locally.
 - Use `draft: false` to publish. Future dates do not schedule publication.
 - The filename becomes the URL: `my-first-note.md` → `/posts/my-first-note/`. Keep filenames lowercase with hyphens.
 - Markdown supports headings, links, lists, quotes, and fenced code blocks. LaTeX uses `$...$` inline and `$$` on separate lines for display math. Rendering happens at build time, with local KaTeX assets.
 - The example posts have `example: true` and a visible notice. Replace or delete those files when adding your writing; omit `example` on your own posts.
-
-When editing an existing note in the writing desk, **Save on GitHub** opens the existing file. Use **Copy Markdown**, paste it over the file’s contents, and commit. For a new note, the title and contents are filled in automatically. Long notes should be downloaded and uploaded to GitHub instead.
 
 ## Run locally
 

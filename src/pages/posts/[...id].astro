@@ -22,7 +22,7 @@ const toc = headings.filter(h => h.depth === 2);
     {post.data.example && <aside class="sample-notice">An example entry to demonstrate this notebook. Replace it with your own writing.</aside>}
     {toc.length > 1 && <details class="table-of-contents"><summary>In this note</summary><ol>{toc.map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></details>}
     <article class="prose"><Content /></article>
-    <div class="article-actions"><span>Thanks for reading.</span><a href={`/write/?edit=${encodeURIComponent(post.id)}`}>Edit this note ↗</a></div>
+    <div class="article-actions"><span>Thanks for reading.</span></div>
     {next && <a class="next-post" href={`/posts/${next.id}/`}><span class="eyebrow">THE NEXT PAGE</span><span class="next-title">{next.data.title}<span aria-hidden="true">→</span></span></a>}
   </div>
 </Base>

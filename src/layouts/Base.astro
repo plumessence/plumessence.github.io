@@ -46,7 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <main id="main"><slot /></main>
     <footer class="site-footer wrap">
       <div class="footer-top"><span class="footer-signoff"><Flower /> A little more understood, a little more to learn.</span><a class="back-top" href="#top" aria-label="Back to top">↑</a></div>
-      <div class="footer-bottom"><span>© {new Date().getUTCFullYear()} Gloria Li</span><span class="footer-links"><a href="/rss.xml">RSS ↗</a><a href="/write/">Write a note <span aria-hidden="true">↗</span></a></span></div>
+      <div class="footer-bottom"><span>© {new Date().getUTCFullYear()} Gloria Li</span><span class="footer-links"><a href="/rss.xml">RSS ↗</a></span></div>
     </footer>
     <script>
       const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
