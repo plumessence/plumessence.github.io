@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /write/
+Sitemap: https://plumessence.github.io/sitemap.xml

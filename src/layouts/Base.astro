@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+import Flower from '../components/Flower.astro';
+const { title = 'Gloria Li — a personal notebook', description = 'Notes on mathematics, machine learning, and learning out loud.', active = '', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8f7f3" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Gloria Li's notebook" href="/rss.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet" />
+    <script is:inline>
+      try { document.documentElement.dataset.theme = localStorage.getItem('notebook-theme') || 'light'; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="brand" href="/" aria-label="Gloria Li, home"><Flower /><span>Gloria Li<span class="brand-dot">.</span></span></a>
+      <nav aria-label="Main navigation">
+        <a href="/" class:list={{ active: active === 'writing' }} aria-current={active === 'writing' ? 'page' : undefined}>Writing</a>
+        <a href="/about/" class:list={{ active: active === 'about' }} aria-current={active === 'about' ? 'page' : undefined}>About</a>
+        <a class="github-nav" href="https://github.com/plumessence" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        <span class="nav-divider" aria-hidden="true"></span>
+        <button class="theme-toggle icon-button" aria-label="Switch to dark theme" title="Change theme">
+          <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+          <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M20 15.6A8.5 8.5 0 0 1 8.4 4 8.5 8.5 0 1 0 20 15.6Z"/></svg>
+        </button>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer wrap">
+      <div class="footer-top"><span class="footer-signoff"><Flower /> A little more understood, a little more to learn.</span><a class="back-top" href="#top" aria-label="Back to top">↑</a></div>
+      <div class="footer-bottom"><span>© {new Date().getUTCFullYear()} Gloria Li</span><span class="footer-links"><a href="/rss.xml">RSS ↗</a><a href="/write/">Write a note <span aria-hidden="true">↗</span></a></span></div>
+    </footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+      function updateLabel() {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        button?.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
+      }
+      updateLabel();
+      button?.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        try { localStorage.setItem('notebook-theme', theme); } catch {}
+        updateLabel();
+      });
+    </script>
+  </body>
+</html>

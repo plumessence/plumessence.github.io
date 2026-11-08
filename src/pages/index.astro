@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import { publishedPosts, formatDate, readingTime } from '../lib/posts';
+const posts = await publishedPosts();
+const topics = ['All writing', 'Math', 'Machine learning', 'Schoolwork', 'Other'];
+const examplesOnly = posts.length > 0 && posts.every(p => p.data.example);
+---
+<Base active="writing">
+  <div id="top" class="wrap home">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-main">
+        <div class="eyebrow"><span class="tiny-line"></span> THE PERSONAL NOTEBOOK OF GLORIA LI</div>
+        <h1 id="intro-title">Thinking in math.<br />Writing in <em>the margins.</em></h1>
+        <p class="intro-description">A place for ideas in mathematics and machine learning,<br class="desktop-break" /> notes from school, and thoughts still taking shape.</p>
+        <a class="text-link intro-link" href="/about/">A little about me <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside class="margin-note" aria-label="A note in the margin">
+        <svg class="branch" width="124" height="156" viewBox="0 0 124 156" fill="none" aria-hidden="true">
+          <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><path d="M35 148c10-42 24-80 51-131M55 93c-18-6-27-18-30-37m43 7c16 0 27-10 34-24M42 126c17-4 29-13 37-27M77 43C65 35 60 26 59 14"/><path d="M25 57C11 61 9 43 23 47 13 34 32 28 33 43 45 34 51 51 37 53c11 10-6 22-12 4ZM99 40c-10 4-17-8-6-12-12-4-4-17 3-10 3-13 17-5 11 3 14 0 12 15 1 14 8 9-6 18-9 5ZM79 99c-11-3-9-16 0-13-8-9 5-17 10-8 6-10 18 1 10 8 13 3 7 17-3 11 0 12-15 13-17 2Z"/><path d="M59 14c-8-4-4-13 2-9 0-9 11-7 10 0 8-4 12 6 5 9 7 5-1 12-6 7-4 7-12 1-11-7Z"/></g><g fill="currentColor"><circle cx="30" cy="50" r="1.6"/><circle cx="101" cy="29" r="1.5"/><circle cx="88" cy="89" r="1.5"/><circle cx="67" cy="13" r="1.2"/></g>
+        </svg>
+        <p>For the pleasure<br />of figuring things out.</p>
+        <span class="margin-number">— a work in progress</span>
+      </aside>
+    </section>
+    <section class="writing-section" aria-labelledby="writing-title">
+      <div class="section-heading"><h2 id="writing-title">Writing <span class="post-count">{String(posts.length).padStart(2, '0')}</span></h2><label class="search"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><span class="sr-only">Search posts</span><input id="search" type="search" placeholder="Find a thought…" autocomplete="off" /><kbd aria-hidden="true">/</kbd></label></div>
+      <div class="filter-bar" role="group" aria-label="Filter writing by topic">
+        {topics.map((topic, index) => <button type="button" class:list={['filter', { selected: index === 0 }]} data-topic={index === 0 ? 'all' : topic} aria-pressed={index === 0}>{topic}</button>)}
+      </div>
+      {examplesOnly && <p class="example-caption">THE FIRST PAGES <span>·</span> Example entries to make this notebook your own.</p>}
+      <div class="post-list">
+        {posts.map(post => <article class="post-row" data-topic={post.data.topic} data-search={`${post.data.title} ${post.data.description} ${post.data.topic} ${post.body || ''}`.toLowerCase()}>
+          <a class="post-row-link" href={`/posts/${post.id}/`}>
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            <div class="post-row-content"><div class="post-title-line"><h3>{post.data.title}</h3><span class="post-arrow" aria-hidden="true">↗</span></div><p>{post.data.description}</p><div class="post-meta"><span class:list={['topic', { 'topic-plum': post.data.topic === 'Math' }]}>{post.data.topic}</span><span class="meta-dot">·</span><span>{readingTime(post.body)} min read</span></div></div>
+          </a>
+        </article>)}
+      </div>
+      <p class="empty-state" hidden>No notes found. Try another word or topic.</p>
+      <p class="filter-status sr-only" role="status" aria-live="polite"></p>
+      {posts.length === 0 && <p class="empty-state">A blank page, for now. The first note is on its way.</p>}
+      <div class="endnote"><span class="endnote-mark">✳</span><p>Ideas are better when they have somewhere to land.</p><a href="/rss.xml">Follow along via RSS <span aria-hidden="true">↗</span></a></div>
+    </section>
+  </div>
+  <script>
+    const input = document.querySelector<HTMLInputElement>('#search')!;
+    const filters = [...document.querySelectorAll<HTMLButtonElement>('.filter')];
+    const rows = [...document.querySelectorAll<HTMLElement>('.post-row')];
+    let topic = 'all';
+    const url = new URL(location.href);
+    if (filters.some(button => button.dataset.topic === url.searchParams.get('topic'))) topic = url.searchParams.get('topic')!;
+    input.value = url.searchParams.get('q') || '';
+    function filterPosts(updateUrl = true) {
+      const query = input.value.trim().toLowerCase();
+      let count = 0;
+      for (const row of rows) {
+        row.hidden = !((topic === 'all' || row.dataset.topic === topic) && row.dataset.search!.includes(query));
+        if (!row.hidden) count++;
+      }
+      filters.forEach(button => { const selected = button.dataset.topic === topic; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); });
+      document.querySelector<HTMLElement>('.post-count')!.textContent = String(count).padStart(2, '0');
+      document.querySelector<HTMLElement>('.empty-state')!.hidden = count > 0;
+      document.querySelector<HTMLElement>('.filter-status')!.textContent = `${count} ${count === 1 ? 'note' : 'notes'} found`;
+      if (updateUrl) {
+        const next = new URL(location.href);
+        topic === 'all' ? next.searchParams.delete('topic') : next.searchParams.set('topic', topic);
+        query ? next.searchParams.set('q', input.value) : next.searchParams.delete('q');
+        history.replaceState({}, '', next);
+      }
+    }
+    filters.forEach(button => button.addEventListener('click', () => { topic = button.dataset.topic!; filterPosts(); }));
+    input.addEventListener('input', () => filterPosts());
+    document.addEventListener('keydown', event => {
+      if (event.key === '/' && !/INPUT|TEXTAREA/.test((event.target as HTMLElement).tagName) && !event.ctrlKey && !event.metaKey) { event.preventDefault(); input.focus(); }
+      if (event.key === 'Escape' && document.activeElement === input) { input.value = ''; filterPosts(); input.blur(); }
+    });
+    filterPosts(false);
+  </script>
+</Base>

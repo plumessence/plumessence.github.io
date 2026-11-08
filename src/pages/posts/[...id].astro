@@ -1,0 +1,28 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { publishedPosts, formatDate, readingTime } from '../../lib/posts';
+export async function getStaticPaths() {
+  const posts = await publishedPosts();
+  return posts.map((post, i) => ({ params: { id: post.id }, props: { post, next: posts[i + 1] } }));
+}
+const { post, next } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter(h => h.depth === 2);
+---
+<Base title={`${post.data.title} — Gloria Li`} description={post.data.description}>
+  <div class="reading-page post-page wrap" id="top">
+    <a class="back-link" href="/">← All writing</a>
+    <header class="post-header">
+      <a class="eyebrow plum" href={`/?topic=${encodeURIComponent(post.data.topic)}`}>{post.data.topic}</a>
+      <h1>{post.data.title}</h1>
+      <p class="post-deck">{post.data.description}</p>
+      <div class="article-meta"><span>Gloria Li</span><span>·</span><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>·</span><span>{readingTime(post.body)} min read</span></div>
+    </header>
+    {post.data.example && <aside class="sample-notice">An example entry to demonstrate this notebook. Replace it with your own writing.</aside>}
+    {toc.length > 1 && <details class="table-of-contents"><summary>In this note</summary><ol>{toc.map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></details>}
+    <article class="prose"><Content /></article>
+    <div class="article-actions"><span>Thanks for reading.</span><a href={`/write/?edit=${encodeURIComponent(post.id)}`}>Edit this note ↗</a></div>
+    {next && <a class="next-post" href={`/posts/${next.id}/`}><span class="eyebrow">THE NEXT PAGE</span><span class="next-title">{next.data.title}<span aria-hidden="true">→</span></span></a>}
+  </div>
+</Base>
