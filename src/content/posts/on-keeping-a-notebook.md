@@ -2,7 +2,7 @@
 title: "On keeping a notebook"
 description: "Making room for the half-formed idea and the question without an answer."
 date: "2026-10-30"
-topic: "Other"
+topic: "Thoughts"
 example: true
 ---
 

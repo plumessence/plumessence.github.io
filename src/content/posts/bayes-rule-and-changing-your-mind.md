@@ -2,7 +2,7 @@
 title: "Bayes’ rule and changing your mind"
 description: "A probability note on what evidence actually changes."
 date: "2026-11-03"
-topic: "Schoolwork"
+topic: "Thoughts"
 example: true
 ---
 

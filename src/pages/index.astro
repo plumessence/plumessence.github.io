@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { publishedPosts, formatDate, readingTime } from '../lib/posts';
 const posts = await publishedPosts();
-const topics = ['All writing', 'Math', 'Machine learning', 'Schoolwork', 'Other'];
+const topics = ['All writing', 'Math', 'Machine learning', 'Thoughts'];
 const examplesOnly = posts.length > 0 && posts.every(p => p.data.example);
 ---
 <Base active="writing">
