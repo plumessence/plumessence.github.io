@@ -24,7 +24,7 @@ $$
 $$
 ```
 
-- Topics: `Math`, `Machine learning`, `Thoughts`.
+- Topics: `Math`, `CS`, `AI`, `Thoughts`.
 - `draft: true` excludes a post from the published site, RSS and search. A draft committed to a **public repository is still publicly readable on GitHub**. Keep private drafts locally.
 - Use `draft: false` to publish. Future dates do not schedule publication.
 - The filename becomes the URL: `my-first-note.md` → `/posts/my-first-note/`. Keep filenames lowercase with hyphens.

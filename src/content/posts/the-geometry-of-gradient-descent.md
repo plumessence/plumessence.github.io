@@ -2,7 +2,7 @@
 title: "The geometry of gradient descent"
 description: "A small step downhill, and an intuition for why it works."
 date: "2026-11-08"
-topic: "Machine learning"
+topic: "AI"
 example: true
 ---
 

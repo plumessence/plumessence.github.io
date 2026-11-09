@@ -7,7 +7,7 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    topic: z.enum(['Math', 'Machine learning', 'Thoughts']),
+    topic: z.enum(['Math', 'CS', 'AI', 'Thoughts']),
     draft: z.boolean().default(false),
     example: z.boolean().default(false),
   }),
